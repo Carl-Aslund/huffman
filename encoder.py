@@ -22,7 +22,11 @@ def isValid(text):
     @param text: a string containing the content in question
     @return: a boolean for whether or not the text can be handled
     """
-    pass
+    maxOrd = 2**CHR_BITS - 1
+    for char in text:
+        if ord(char) > maxOrd:
+            return False
+    return True
 
 
 def countFrequency(text):
