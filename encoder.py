@@ -1,5 +1,6 @@
-from config import CHR_BITS
 from functools import reduce
+from config import CHR_BITS
+from unicodeBinary import decToBin
 
 def readFile(fileName):
     """Reads a specified text file.
@@ -99,9 +100,12 @@ def encode(codeDict, text):
 
     @param codeDict: a dictionary containing the prefix code
     @param text: a string containing the original plaintext
-    @return: a string representing the encoded text
+    @return: a binary string representing the encoded text
     """
-    pass
+    binStr = ""
+    for char in test:
+        binStr += codeDict[char]
+    return binStr
 
 def writeOverhead(codeDict):
     """Generates the overhead dictionary for the encoded file.
@@ -109,7 +113,16 @@ def writeOverhead(codeDict):
     @param codeDict: a dictionary containing the prefix code
     @return: the bits used to represent the dictionary
     """
-    pass
+    overhead = ""
+    for i in range(256):
+        char = chr(i)
+        if char in codeDict:
+            encoding = codeDict[char]
+            overhead += decToBin(len(encoding))
+            overhead += encoding
+        else:
+            overhead += decToBin(0)
+    return overhead
 
 if __name__ == "__main__":
     # TODO: Write everything
