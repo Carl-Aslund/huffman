@@ -28,7 +28,6 @@ def isValid(text):
             return False
     return True
 
-
 def countFrequency(text):
     """Counts the number of occurences of each character in a chunk of text.
 
@@ -64,10 +63,10 @@ def encode(codeDict, text):
     pass
 
 def writeOverhead(codeDict):
-    """Generates the overhead dictionary for
+    """Generates the overhead dictionary for the encoded file.
 
     @param codeDict: a dictionary containing the prefix code
-    @return:
+    @return: the bits used to represent the dictionary
     """
     pass
 
