@@ -1,4 +1,5 @@
 from config import CHR_BITS
+from functools import reduce
 
 def readFile(fileName):
     """Reads a specified text file.
@@ -25,6 +26,7 @@ def isValid(text):
     maxOrd = 2**CHR_BITS - 1
     for char in text:
         if ord(char) > maxOrd:
+            print("ERROR: "+char+" cannot be represented by "+CHR_BITS+" bits.")
             return False
     return True
 
@@ -34,7 +36,25 @@ def countFrequency(text):
     @param text: a string containing the characters to be counted
     @return: a dictionary containing the number of occurences of each character
     """
-    pass
+    freqDict = {}
+    for char in text:
+        if char in freqDict:
+            freqDict[char] += 1
+        else:
+            freqDict[char] = 1
+    return freqDict
+
+def leafMin(leaf1, leaf2):
+    """Returns the lesser of two leaves.
+
+    @param leaf1: the first leaf
+    @param leaf2: the second leaf
+    return: the lesser leaf between leaf1 and leaf2
+    """
+    if leaf1[0] < leaf2[0]:
+        return leaf1
+    else:
+        return leaf2
 
 def buildTree(freqDict):
     """Constructs a Huffman tree from provided character frequencies.
@@ -42,7 +62,17 @@ def buildTree(freqDict):
     @param freqDict: a dictionary with all characters and their frequencies
     @return: a list-styled Huffman tree: [count, leftTree, rightTree]
     """
-    pass
+    protoTree = [[freqDict[key],key] for key in freqDict]
+    while len(protoTree) > 2:
+        print(protoTree)
+        firstLeaf = reduce(leafMin,protoTree)
+        protoTree.remove(firstLeaf)
+        secondLeaf = reduce(leafMin,protoTree)
+        protoTree.remove(secondLeaf)
+        newLeaf = [firstLeaf[0]+secondLeaf[0], [firstLeaf[1],secondLeaf[1]]]
+        protoTree.append(newLeaf)
+    huffTree = [protoTree[0][0]+protoTree[1][0],protoTree[0][1],protoTree[1][1]]
+    return huffTree
 
 def makeCode(huffTree, prefix=""):
     """Recursively generates a prefix code from a given Huffman tree.
@@ -72,3 +102,4 @@ def writeOverhead(codeDict):
 
 if __name__ == "__main__":
     # TODO: Write everything
+    print()
