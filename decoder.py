@@ -6,7 +6,10 @@ def readFile(fileName):
     @param fileName: a string containing the relative path of the target file
     @return: a string containing the entire contents of that text file
     """
-    pass
+    openFile = open(fileName, 'r')
+    contents = openFile.read()
+    openFile.close()
+    return contents
 
 def writeFile(fileName, text):
     """Writes some text to a specified file.
@@ -14,7 +17,10 @@ def writeFile(fileName, text):
     @param fileName: a string containing the relative path of the target file
     @param text: a string containing the text to be written
     """
-    pass
+    openFile = open(fileName, 'w')
+    openFile.write(text)
+    openFile.close()
+    return
 
 def readOverhead(binText):
     """Processes the overhead of a Huffman-encoded file.
