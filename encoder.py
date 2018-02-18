@@ -64,14 +64,13 @@ def buildTree(freqDict):
     """
     protoTree = [[freqDict[key],key] for key in freqDict]
     while len(protoTree) > 2:
-        print(protoTree)
         firstLeaf = reduce(leafMin,protoTree)
         protoTree.remove(firstLeaf)
         secondLeaf = reduce(leafMin,protoTree)
         protoTree.remove(secondLeaf)
         newLeaf = [firstLeaf[0]+secondLeaf[0], [firstLeaf[1],secondLeaf[1]]]
         protoTree.append(newLeaf)
-    huffTree = [protoTree[0][0]+protoTree[1][0],protoTree[0][1],protoTree[1][1]]
+    huffTree = [protoTree[0][1],protoTree[1][1]]
     return huffTree
 
 def makeCode(huffTree, prefix=""):
@@ -81,7 +80,13 @@ def makeCode(huffTree, prefix=""):
     @param prefix: a string of digits accumulated by traversing a branch
     @return: a dictionary containing the code
     """
-    pass
+    if type(huffTree) == type(''):
+        return {huffTree : prefix}
+    else:
+        leftDict = makeCode(huffTree[0], prefix+"0")
+        rightDict = makeCode(huffTree[1], prefix+"1")
+        leftDict.update(rightDict)
+        return leftDict
 
 def encode(codeDict, text):
     """Converts plaintext letters into their prefix code equivalent.
