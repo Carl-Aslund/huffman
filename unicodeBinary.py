@@ -45,3 +45,28 @@ def binToUni(binStr):
     """
     decimal = binToDec(binStr)
     return chr(decimal)
+
+def textToBin(text):
+    """Converts unicode text into a binary string.
+
+    @param text: a string of plaintext input
+    @return: a string representing the binary output
+    """
+    binText = ""
+    for char in text:
+        binText += uniToBin(char)
+    return binText
+
+def binToText(text):
+    """Converts a binary string into unicode text.
+
+    @param text: a string of binary input
+    @return: a string of translated plaintext
+    """
+    if len(text)%CHR_BITS != 0:
+        print("ERROR: Invalid binary input length.")
+    else:
+        output = ""
+        for i in range(0, len(text), CHR_BITS):
+            output += binToUni(text[i:i+CHR_BITS])
+        return output
