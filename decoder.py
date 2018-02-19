@@ -45,24 +45,32 @@ def readOverhead(binText):
         if numBits == 0:
             continue
         else:
-            codeDict[chr(charInt)] = leftoverText[i:i+numBits]
+            codeDict[leftoverText[i:i+numBits]] = chr(charInt)
             i += numBits
     encodedText = binText[i:-numZeroes]
     return codeDict, encodedText
 
-def decode(codeDict, binText):
+def decode(codeDict, encoded):
     """Converts prefix code into its plaintext equivalent.
 
     @param codeDict: a dictionary containing the prefix code
-    @param binText: a binary string containing the encoded text
+    @param encoded: a binary string containing the encoded text
     @return: a string representing the original plaintext
     """
-    pass
+    plaintext = ""
+    i = 0
+    for j in range(len(encoded)):
+        if encoded[i:j+1] in codeDict:
+            plaintext += codeDict[encoded[i:j+1]]
+            i = j+1
+    return plaintext
 
 def main():
     name = input("Enter the name of the compressed file: ")
     contents = readFile("compressed/"+name+".huff")
     codeD, encoded = readOverhead(contents)
+    plaintext = decode(codeD, encoded)
+    print(plaintext)
 
 if __name__ == "__main__":
     main()
