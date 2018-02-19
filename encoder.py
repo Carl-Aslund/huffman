@@ -1,6 +1,7 @@
 from functools import reduce
 from config import CHR_BITS
-from unicodeBinary import decToBin
+from unicodeBinary import decToBin, binToText
+from math import log2, ceil
 
 def readFile(fileName):
     """Reads a specified text file.
@@ -103,7 +104,7 @@ def encode(codeDict, text):
     @return: a binary string representing the encoded text
     """
     binStr = ""
-    for char in test:
+    for char in text:
         binStr += codeDict[char]
     return binStr
 
@@ -114,7 +115,7 @@ def writeOverhead(codeDict):
     @return: the bits used to represent the dictionary
     """
     overhead = ""
-    for i in range(256):
+    for i in range(2**CHR_BITS):
         char = chr(i)
         if char in codeDict:
             encoding = codeDict[char]
@@ -124,6 +125,28 @@ def writeOverhead(codeDict):
             overhead += decToBin(0)
     return overhead
 
+def main():
+    """The method allowing the program to execute its own methods.
+    """
+    name = input("Enter the name of the plaintext file: ")
+    contents = readFile("plaintext/"+name+".txt")
+    if isValid:
+        print("Input size: "+str(len(contents)))
+        freqD = countFrequency(contents)
+        tree = buildTree(freqD)
+        codeD = makeCode(tree)
+        encoded = encode(codeD, contents)
+        overhead = writeOverhead(codeD)
+        frontBits = ceil(log2(CHR_BITS)) # Bits needed at front for zeroes
+        bitsModMax = (len(encoded) + len(overhead) + frontBits)%CHR_BITS
+        extraZeroes = (CHR_BITS - bitsModMax)%CHR_BITS
+        frontZeroes = decToBin(extraZeroes, frontBits)
+        outBits = frontZeroes + overhead + encoded + "0"*extraZeroes
+        compressed = binToText(outBits)
+        print("Output size: "+str(len(compressed)))
+        writeFile("compressed/"+name+".huff", compressed)
+    else:
+        print("Next time, use a file with valid characters.")
+
 if __name__ == "__main__":
-    # TODO: Write everything
-    print()
+    main()

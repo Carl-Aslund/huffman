@@ -11,7 +11,7 @@ def binToDec(binStr):
         decimal = 2 * decimal + int(digit)
     return decimal
 
-def decToBin(dec):
+def decToBin(dec, bits=CHR_BITS):
     """Converts a decimal number into a binary string.
 
     @param dec: an integer in base-10
@@ -26,7 +26,7 @@ def decToBin(dec):
         else:
             binStr = "0" + binStr
         i += 1
-    return "0"*(CHR_BITS-len(binStr)) + binStr
+    return "0"*(bits-len(binStr)) + binStr
 
 def uniToBin(char):
     """Converts a Unicode character into a binary string.
