@@ -41,7 +41,7 @@ def readOverhead(binText):
     for charInt in range(2**CHR_BITS):
         numBitsBits = leftoverText[i:i+CHR_BITS]
         numBits = binToDec(numBitsBits)
-        i += 8
+        i += CHR_BITS
         if numBits == 0:
             continue
         else:
@@ -70,7 +70,7 @@ def main():
     contents = readFile("compressed/"+name+".huff")
     codeD, encoded = readOverhead(contents)
     plaintext = decode(codeD, encoded)
-    print(plaintext)
+    writeFile("decompressed/"+name+".txt", plaintext)
 
 if __name__ == "__main__":
     main()
